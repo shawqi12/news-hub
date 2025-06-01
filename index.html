@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الأخبار العاجلة - موقع الأخبار</title>
+    <style>
+        :root {
+            --primary-color: #1A2B3C;
+            --primary-light: #2A3B4C;
+            --primary-dark: #0A1B2C;
+            --secondary-color: #E0E0E0;
+            --secondary-light: #F0F0F0;
+            --secondary-dark: #D0D0D0;
+            --accent-color: #FF7F00;
+            --accent-light: #FF9933;
+            --accent-dark: #E67300;
+            --gold-color: #FFD700;
+            --gold-light: #FFDF33;
+            --gold-dark: #E6C200;
+            --white: #FFFFFF;
+            --black: #000000;
+            --red: #E53935;
+            --green: #43A047;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--secondary-light);
+            color: var(--black);
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-right: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .search-bar {
+            display: flex;
+            margin-top: 1rem;
+            max-width: 1200px;
+            margin: 1rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.7rem;
+            border: 1px solid var(--secondary-dark);
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: var(--accent-dark);
+        }
+
+        /* Breaking News */
+        .breaking-news {
+            background-color: var(--accent-color);
+            color: var(--white);
+            padding: 0.5rem 0;
+            overflow: hidden;
+        }
+
+        .breaking-news-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .breaking-label {
+            background-color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            margin-left: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        .breaking-news-ticker {
+            white-space: nowrap;
+            animation: ticker 20s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Main Content */
+        .main-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 2rem;
+        }
+
+        .main-content {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .featured-articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .article-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 1rem;
+        }
+
+        .article-category {
+            display: inline-block;
+            background-color: var(--primary-light);
+            color: var(--white);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .article-excerpt {
+            color: #555;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #777;
+            font-size: 0.8rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .read-more:hover {
+            background-color: var(--accent-dark);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+        }
+
+        .popular-articles {
+            margin-bottom: 2rem;
+        }
+
+        .popular-article {
+            display: flex;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--secondary-color);
+        }
+
+        .popular-article-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-left: 1rem;
+        }
+
+        .popular-article-content h3 {
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .popular-article-content p {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .categories-list {
+            list-style: none;
+        }
+
+        .categories-list li {
+            margin-bottom: 0.5rem;
+        }
+
+        .categories-list a {
+            display: block;
+            padding: 0.5rem;
+            background-color: var(--secondary-light);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .categories-list a:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background-color: var(--primary-light);
+            color: var(--white);
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .newsletter-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            margin-bottom: 1.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            background-color: var(--gold-color);
+            color: var(--primary-dark);
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: var(--gold-dark);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background-color: var(--primary-light);
+            color: var(--white);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 36px;
+            margin-left: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--primary-light);
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                flex-wrap: wrap;
+            }
+
+            nav ul li {
+                margin-bottom: 0.5rem;
+            }
+
+            .featured-articles {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">أخبار<span>اليوم</span></a>
+            <nav>
+                <ul>
+                    <li><a href="#">الرئيسية</a></li>
+                    <li><a href="#">أخبار عاجلة</a></li>
+                    <li><a href="#">تكنولوجيا</a></li>
+                    <li><a href="#">اقتصاد</a></li>
+                    <li><a href="#">ذكاء اصطناعي</a></li>
+                    <li><a href="#">تسجيل الدخول</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="ابحث عن أخبار...">
+            <button type="submit">بحث</button>
+        </div>
+    </header>
+
+    <section class="breaking-news">
+        <div class="breaking-news-container">
+            <div class="breaking-label">عاجل</div>
+            <div class="breaking-news-ticker">
+                ارتفاع مؤشرات البورصة العالمية بنسبة 3% | إطلاق أحدث تقنيات الذكاء الاصطناعي للتنبؤ بالطقس | توقيع اتفاقية تجارية بين الدول العربية وأوروبا | اكتشاف علاج جديد لمرض السكري
+            </div>
+        </div>
+    </section>
+
+    <div class="main-container">
+        <main class="main-content">
+            <section>
+                <h2 class="section-title">أبرز الأخبار</h2>
+                <div class="featured-articles">
+                    <article class="article-card">
+                        <img src="https://via.placeholder.com/400x200" alt="صورة المقال" class="article-image">
+                        <div class="article-content">
+                            <span class="article-category">تكنولوجيا</span>
+                            <h3 class="article-title">إطلاق الجيل الجديد من الهواتف الذكية بتقنيات متطورة</h3>
+                            <p class="article-excerpt">أعلنت شركة التكنولوجيا الرائدة عن إطلاق الجيل الجديد من هواتفها الذكية المزودة بأحدث التقنيات والمعالجات...</p>
+                            <div class="article-meta">
+                                <span>منذ 3 ساعات</span>
+                                <span>بواسطة: أحمد محمد</span>
+                            </div>
+                            <a href="#" class="read-more">اقرأ المزيد</a>
+                        </div>
+                    </article>
+                    <article class="article-card">
+                        <img src="https://via.placeholder.com/400x200" alt="صورة المقال" class="article-image">
+                        <div class="article-content">
+                            <span class="article-category">اقتصاد</span>
+                            <h3 class="article-title">ارتفاع أسعار النفط عالمياً بعد قرارات أوبك الأخيرة</h3>
+                            <p class="article-excerpt">شهدت أسواق النفط العالمية ارتفاعاً ملحوظاً في الأسعار بعد القرارات الأخيرة لمنظمة الدول المصدرة للنفط...</p>
+                            <div class="article-meta">
+                                <span>منذ 5 ساعات</span>
+                                <span>بواسطة: سارة أحمد</span>
+                            </div>
+                            <a href="#" class="read-more">اقرأ المزيد</a>
+                        </div>
+                    </article>
+                    <article class="article-card">
+                        <img src="https://via.placeholder.com/400x200" alt="صورة المقال" class="article-image">
+                        <div class="article-content">
+                            <span class="article-category">ذكاء اصطناعي</span>
+                            <h3 class="article-title">تطبيقات جديدة للذكاء الاصطناعي في القطاع الصحي</h3>
+                            <p class="article-excerpt">كشفت دراسة حديثة عن تطبيقات جديدة للذكاء الاصطناعي في القطاع الصحي تساهم في تشخيص الأمراض بدقة أكبر...</p>
+                            <div class="article-meta">
+                                <span>منذ 8 ساعات</span>
+                                <span>بواسطة: محمد علي</span>
+                            </div>
+                            <a href="#" class="read-more">اقرأ المزيد</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="section-title">أحدث الأخبار</h2>
+                <div class="featured-articles">
+                    <article class="article-card">
+                        <img src="https://via.placeholder.com/400x200" alt="صورة المقال" class="article-image">
+                        <div class="article-content">
+                            <span class="article-category">تكنولوجيا</span>
+                            <h3 class="article-title">تطوير تقنية جديدة لشحن الهواتف لاسلكياً عن بعد</h3>
+                            <p class="article-excerpt">نجح فريق من الباحثين في تطوير تقنية جديدة تتيح شحن الهواتف الذكية لاسلكياً من مسافة تصل إلى 10 أمتار...</p>
+                            <div class="article-meta">
+                                <span>منذ 10 ساعات</span>
+                                <span>بواسطة: فاطمة محمود</span>
+                            </div>
+                            <a href="#" class="read-more">اقرأ المزيد</a>
+                        </div>
+                    </article>
+                    <article class="article-card">
+                        <img src="https://via.placeholder.com/400x200" alt="صورة المقال" class="article-image">
+                        <div class="article-content">
+                            <span class="article-category">اقتصاد</span>
+                            <h3 class="article-title">توقعات بنمو الاقتصاد العالمي بنسبة 4% خلال العام القادم</h3>
+                            <p class="article-excerpt">توقع صندوق النقد الدولي نمو الاقتصاد العالمي بنسبة 4% خلال العام القادم، مدفوعاً بالتعافي من تداعيات الجائحة...</p>
+                            <div class="article-meta">
+                                <span>منذ 12 ساعة</span>
+                                <span>بواسطة: خالد إبراهيم</span>
+                            </div>
+                            <a href="#" class="read-more">اقرأ المزيد</a>
+                        </div>
+                    </article>
+                    <article class="article-card">
+                        <img src="https://via.placeholder.com/400x200" alt="صورة المقال" class="article-image">
+                        <div class="article-content">
+                            <span class="article-category">ذكاء اصطناعي</span>
+                            <h3 class="article-title">روبوتات ذكية جديدة لمساعدة كبار السن في المنازل</h3>
+                            <p class="article-excerpt">أطلقت شركة متخصصة في الذكاء الاصطناعي روبوتات ذكية مصممة خصيصاً لمساعدة كبار السن في أعمال المنزل اليومية...</p>
+                            <div class="article-meta">
+                                <span>منذ يوم</span>
+                                <span>بواسطة: نورا سعيد</span>
+                            </div>
+                            <a href="#" class="read-more">اقرأ المزيد</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <aside class="sidebar">
+            <section class="popular-articles">
+                <h2 class="section-title">الأكثر قراءة</h2>
+                <article class="popular-article">
+                    <img src="https://via.placeholder.com/80x80" alt="صورة المقال" class="popular-article-image">
+                    <div class="popular-article-content">
+                        <h3>تقنيات الذكاء الاصطناعي تغير مستقبل التعليم</h3>
+                        <p>منذ 3 أيام</p>
+                    </div>
+                </article>
+                <article class="popular-article">
+                    <img src="https://via.placeholder.com/80x80" alt="صورة المقال" class="popular-article-image">
+                    <div class="popular-article-content">
+                        <h3>استثمارات ضخمة في مشاريع الطاقة المتجددة</h3>
+                        <p>منذ 4 أيام</p>
+                    </div>
+                </article>
+                <article class="popular-article">
+                    <img src="https://via.placeholder.com/80x80" alt="صورة المقال" class="popular-article-image">
+                    <div class="popular-article-content">
+                        <h3>تطبيقات جديدة تساعد على تحسين الإنتاجية</h3>
+                        <p>منذ 5 أيام</p>
+                    </div>
+                </article>
+                <article class="popular-article">
+                    <img src="https://via.placeholder.com/80x80" alt="صورة المقال" class="popular-article-image">
+                    <div class="popular-article-content">
+                        <h3>دراسة: العمل من المنزل يزيد من إنتاجية الموظفين</h3>
+                        <p>منذ أسبوع</p>
+                    </div>
+                </article>
+            </section>
+
+            <section>
+                <h2 class="section-title">الأقسام</h2>
+                <ul class="categories-list">
+                    <li><a href="#">أخبار عاجلة</a></li>
+                    <li><a href="#">تكنولوجيا</a></li>
+                    <li><a href="#">اقتصاد</a></li>
+                    <li><a href="#">ذكاء اصطناعي</a></li>
+                    <li><a href="#">سياسة</a></li>
+                    <li><a href="#">رياضة</a></li>
+                    <li><a href="#">ثقافة</a></li>
+                    <li><a href="#">صحة</a></li>
+                </ul>
+            </section>
+        </aside>
+    </div>
+
+    <section class="newsletter">
+        <div class="newsletter-container">
+            <h2>اشترك في نشرتنا البريدية</h2>
+            <p>احصل على أحدث الأخبار والتحليلات مباشرة إلى بريدك الإلكتروني</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="أدخل بريدك الإلكتروني">
+                <button type="submit">اشترك الآن</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>عن الموقع</h3>
+                <p>موقع أخبار اليوم هو منصة إخبارية شاملة تقدم أحدث الأخبار والتحليلات في مجالات السياسة والاقتصاد والتكنولوجيا والذكاء الاصطناعي وغيرها من المجالات.</p>
+            </div>
+            <div class="footer-section">
+                <h3>روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="#">الصفحة الرئيسية</a></li>
+                    <li><a href="#">أخبار عاجلة</a></li>
+                    <li><a href="#">تكنولوجيا</a></li>
+                    <li><a href="#">اقتصاد</a></li>
+                    <li><a href="#">ذكاء اصطناعي</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>تواصل معنا</h3>
+                <ul class="footer-links">
+                    <li>البريد الإلكتروني: info@akhbar-alyoum.com</li>
+                    <li>الهاتف: +123 456 7890</li>
+                    <li>العنوان: شارع الصحافة، المدينة</li>
+                </ul>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 أخبار اليوم. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+</body>
+</html>
