@@ -1,0 +1,178 @@
+ا<!-- نموذج لعرض صورة رئيسية للمقال -->
+<div class="article-featured-image">
+    <img src="{{ article.featured_image }}" alt="{{ article.title }}" class="img-fluid">
+    <div class="image-caption">{{ article.image_caption }}</div>
+</div>
+
+<!-- نموذج لمعرض صور داخل المقال -->
+<div class="article-gallery">
+    {% for image in article.media %}
+        {% if image.type == 'image' %}
+        <div class="gallery-item">
+            <img src="{{ image.url }}" alt="{{ image.title }}" class="img-fluid">
+            <div class="image-caption">{{ image.description }}</div>
+        </div>
+        {% endif %}
+    {% endfor %}
+</div>
+<!-- نموذج لعرض فيديو مضمن من يوتيوب -->
+<div class="article-video">
+    <div class="video-container">
+        <iframe width="100%" height="480" src="{{ video_url }}" 
+                frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>
+    </div>
+    <div class="video-caption">{{ video.description }}</div>
+</div>
+
+<!-- نموذج لعرض فيديو محلي -->
+<div class="article-video">
+    <video width="100%" controls>
+        <source src="{{ video.url }}" type="video/mp4">
+        متصفحك لا يدعم عرض الفيديو.
+    </video>
+    <div class="video-caption">{{ video.description }}</div>
+</div>
+/* تنسيق الصور */
+.article-featured-image {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.article-featured-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.image-caption {
+    background-color: rgba(26, 43, 60, 0.7);
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 0 0 8px 0;
+}
+
+/* تنسيق معرض الصور */
+.article-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+/* تنسيق الفيديو */
+.article-video {
+    margin: 2rem 0;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* نسبة 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.video-caption {
+    background-color: #f0f0f0;
+    padding: 0.8rem;
+    border-radius: 0 0 8px 8px;
+    font-size: 0.9rem;
+    color: #333;
+}// كود لإنشاء معرض صور تفاعلي
+document.addEventListener('DOMContentLoaded', function() {
+    // تحديد جميع عناصر معرض الصور
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    // إضافة مستمع حدث لكل صورة
+    galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const imgSrc = this.querySelector('img').src;
+            const imgCaption = this.querySelector('.image-caption').textContent;
+            
+            // إنشاء عنصر العرض المكبر
+            const lightbox = document.createElement('div');
+            lightbox.className = 'lightbox';
+            lightbox.innerHTML = `
+                <div class="lightbox-content">
+                    <span class="close-lightbox">&times;</span>
+                    <img src="${imgSrc}" alt="${imgCaption}">
+                    <div class="lightbox-caption">${imgCaption}</div>
+                </div>
+            `;
+            
+            // إضافة العنصر للصفحة
+            document.body.appendChild(lightbox);
+            
+            // إغلاق العرض المكبر عند النقر
+            lightbox.querySelector('.close-lightbox').addEventListener('click', function() {
+                document.body.removeChild(lightbox);
+            });
+            
+            // إغلاق العرض المكبر عند النقر خارج الصورة
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    document.body.removeChild(lightbox);
+                }
+            });
+        });
+    });@articles_bp.route('/<string:slug>')
+def show(slug):
+    """عرض مقال محدد مع الوسائط"""
+    article = Article.query.filter_by(slug=slug, status='published').first_or_404()
+    
+    # الحصول على الوسائط المرتبطة بالمقال
+    images = Media.query.filter_by(article_id=article.id, type='image').all()
+    videos = Media.query.filter_by(article_id=article.id, type='video').all()
+    
+    # زيادة عدد المشاهدات
+    if not article.stats:
+        stats = ArticleStats(article_id=article.id)
+        db.session.add(stats)
+    else:
+        article.stats.views += 1
+    
+    article.views_count += 1
+    db.session.commit()
+    
+    # الحصول على التعليقات
+    comments = Comment.query.filter_by(article_id=article.id, parent_id=None, status='approved').order_by(Comment.created_at.desc()).all()
+    
+    return render_template('articles/show.html', 
+                          article=article, 
+                          comments=comments,
+                          images=images,
+                          videos=videos)
+
+});
+
